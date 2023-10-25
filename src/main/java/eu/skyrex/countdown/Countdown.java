@@ -1,13 +1,23 @@
 package eu.skyrex.countdown;
 
+import eu.skyrex.countdown.managers.ButtonManager;
+import eu.skyrex.countdown.managers.CommandManager;
+import eu.skyrex.countdown.managers.ModalManager;
+import eu.skyrex.countdown.managers.SelectionMenuManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Countdown {
 
     private static JDA jda;
+    private static CommandManager commandManager;
+    private static ButtonManager buttonManager;
+    private static SelectionMenuManager selectionMenuManager;
+    private static ModalManager modalManager;
+
     public static void main(String[] args) throws InterruptedException {
         // Check if the token is provided
         if(args.length == 0) {
@@ -23,12 +33,34 @@ public class Countdown {
                 .setMemberCachePolicy(MemberCachePolicy.NONE)
                 .build();
         // Wait for the bot to be ready
-        //jda.awaitReady();
+        jda.awaitReady();
+
+        // Register the event listeners
+        jda.addEventListener(new EventListener());
+
+        // Initialize the command manager and the selection menu manager
+        commandManager = new CommandManager();
+        buttonManager = new ButtonManager();
+        selectionMenuManager = new SelectionMenuManager();
+        modalManager = new ModalManager();
 
         jda.getPresence().setActivity(Activity.watching("the countdown"));
     }
 
     public static JDA getJDA() {
         return jda;
+    }
+
+    public static CommandManager getCommandManager() {
+        return commandManager;
+    }
+    public static ButtonManager getButtonManager() {
+        return buttonManager;
+    }
+    public static SelectionMenuManager getSelectionMenuManager() {
+        return selectionMenuManager;
+    }
+    public static ModalManager getModalManager() {
+        return modalManager;
     }
 }
