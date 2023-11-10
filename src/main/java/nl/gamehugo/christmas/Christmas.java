@@ -1,5 +1,6 @@
 package nl.gamehugo.christmas;
 
+import nl.gamehugo.christmas.commands.ThrowCommand;
 import nl.gamehugo.christmas.managers.ButtonManager;
 import nl.gamehugo.christmas.managers.CommandManager;
 import nl.gamehugo.christmas.managers.ModalManager;
@@ -38,10 +39,12 @@ public class Christmas {
         jda.addEventListener(new EventListener());
 
         // Initialize the command manager and the selection menu manager
-        commandManager = new CommandManager();
+        commandManager = new CommandManager(jda);
         buttonManager = new ButtonManager();
         selectionMenuManager = new SelectionMenuManager();
         modalManager = new ModalManager();
+
+        commandManager.register(new ThrowCommand());
 
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
