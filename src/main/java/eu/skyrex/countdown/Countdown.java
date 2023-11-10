@@ -7,7 +7,6 @@ import eu.skyrex.countdown.managers.SelectionMenuManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class Countdown {
@@ -44,7 +43,7 @@ public class Countdown {
         selectionMenuManager = new SelectionMenuManager();
         modalManager = new ModalManager();
 
-        jda.getPresence().setActivity(Activity.watching("the countdown"));
+        jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
 
     public static JDA getJDA() {
