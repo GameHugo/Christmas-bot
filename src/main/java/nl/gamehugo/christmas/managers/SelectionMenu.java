@@ -1,6 +1,6 @@
-package eu.skyrex.countdown.managers;
+package nl.gamehugo.christmas.managers;
 
-import eu.skyrex.countdown.Christmas;
+import nl.gamehugo.christmas.Christmas;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 
 public interface SelectionMenu {

@@ -1,4 +1,4 @@
-package eu.skyrex.countdown.managers;
+package nl.gamehugo.christmas.managers;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 

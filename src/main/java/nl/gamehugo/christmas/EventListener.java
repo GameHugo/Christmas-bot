@@ -1,4 +1,4 @@
-package eu.skyrex.countdown;
+package nl.gamehugo.christmas;
 
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

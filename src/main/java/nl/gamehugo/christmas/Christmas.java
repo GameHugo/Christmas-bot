@@ -1,9 +1,9 @@
-package eu.skyrex.countdown;
+package nl.gamehugo.christmas;
 
-import eu.skyrex.countdown.managers.ButtonManager;
-import eu.skyrex.countdown.managers.CommandManager;
-import eu.skyrex.countdown.managers.ModalManager;
-import eu.skyrex.countdown.managers.SelectionMenuManager;
+import nl.gamehugo.christmas.managers.ButtonManager;
+import nl.gamehugo.christmas.managers.CommandManager;
+import nl.gamehugo.christmas.managers.ModalManager;
+import nl.gamehugo.christmas.managers.SelectionMenuManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
