@@ -1,12 +1,12 @@
 package eu.skyrex.countdown.managers;
 
-import eu.skyrex.countdown.Countdown;
+import eu.skyrex.countdown.Christmas;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 
 public interface Modal {
     void execute(ModalInteractionEvent event);
 
     default void registerModal(String name) {
-        Countdown.getModalManager().register(name, this);
+        Christmas.getModalManager().register(name, this);
     }
 }

@@ -1,12 +1,12 @@
 package eu.skyrex.countdown.managers;
 
-import eu.skyrex.countdown.Countdown;
+import eu.skyrex.countdown.Christmas;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
 public interface Button {
     void execute(ButtonInteractionEvent event);
 
     default void registerButton(String name) {
-        Countdown.getButtonManager().register(name, this);
+        Christmas.getButtonManager().register(name, this);
     }
 }

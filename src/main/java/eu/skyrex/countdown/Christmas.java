@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
-public class Countdown {
+public class Christmas {
 
     private static JDA jda;
     private static CommandManager commandManager;

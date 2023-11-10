@@ -16,17 +16,17 @@ public class EventListener implements net.dv8tion.jda.api.hooks.EventListener {
     }
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if(!Countdown.getCommandManager().execute(event)) {
+        if(!Christmas.getCommandManager().execute(event)) {
             event.reply("An error occurred while executing the command, Please contact a admin.").queue();
         }
     }
     public void onButtonInteraction(ButtonInteractionEvent event) {
-        if(!Countdown.getButtonManager().execute(event)) {
+        if(!Christmas.getButtonManager().execute(event)) {
             event.reply("An error occurred while executing the command, Please contact a admin.").queue();
         }
     }
     public void onSelectionMenuInteraction(StringSelectInteractionEvent event) {
-        if(!Countdown.getSelectionMenuManager().execute(event)) {
+        if(!Christmas.getSelectionMenuManager().execute(event)) {
             event.reply("An error occurred while executing the command, Please contact a admin.").queue();
         }
     }
