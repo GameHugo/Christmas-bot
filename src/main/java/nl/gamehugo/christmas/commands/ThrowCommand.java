@@ -18,20 +18,10 @@ public class ThrowCommand implements BotCommand {
     public ThrowCommand() {
         choices.add(new Command.Choice("❄️Snowball", "snowball"));
         choices.add(new Command.Choice("🎁Present", "present"));
-        choices.add(new Command.Choice("🔔Bell", "bell"));
-        choices.add(new Command.Choice("🧦Socks", "socks"));
         choices.add(new Command.Choice("🍪Cookie", "cookie"));
-        choices.add(new Command.Choice("🥛Milk", "milk"));
-        choices.add(new Command.Choice("🥕Carrot", "carrot"));
-        choices.add(new Command.Choice("🥧Pie", "pie"));
-        choices.add(new Command.Choice("🍗Turkey", "turkey"));
-        choices.add(new Command.Choice("🍖Meat", "meat"));
-        choices.add(new Command.Choice("🍷Wine", "wine"));
-        choices.add(new Command.Choice("🍺Beer", "beer"));
-        choices.add(new Command.Choice("🍾Champagne", "champagne"));
         choices.add(new Command.Choice("🎄Christmas Tree", "christmas_tree"));
         choices.add(new Command.Choice("🎅Santa", "santa"));
-        Christmas.getJDA().upsertCommand("throw", "Throw a something at someone!")
+        Christmas.getJDA().upsertCommand(getName(), getDescription())
                 .addOption(OptionType.USER, "user", "The user you want to throw at", true)
                 .addOptions(
                         new OptionData(OptionType.STRING, "item", "Item that you want to throw", true)
