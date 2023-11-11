@@ -1,6 +1,6 @@
 package nl.gamehugo.christmas;
 
-import nl.gamehugo.christmas.commands.ThrowBotCommand;
+import nl.gamehugo.christmas.commands.ThrowCommand;
 import nl.gamehugo.christmas.managers.ButtonManager;
 import nl.gamehugo.christmas.managers.CommandManager;
 import nl.gamehugo.christmas.managers.ModalManager;
@@ -47,7 +47,8 @@ public class Christmas {
         selectionMenuManager = new SelectionMenuManager();
         modalManager = new ModalManager();
 
-        commandManager.register(new ThrowBotCommand());
+        // Register the commands
+        commandManager.register(new ThrowCommand());
 
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }

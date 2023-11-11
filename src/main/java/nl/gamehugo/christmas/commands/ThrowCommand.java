@@ -10,14 +10,27 @@ import nl.gamehugo.christmas.managers.BotCommand;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 
-public class ThrowBotCommand implements BotCommand {
+public class ThrowCommand implements BotCommand {
     private final Collection<Command.Choice> choices = new ArrayList<>();
 
-    public ThrowBotCommand() {
+    public ThrowCommand() {
         choices.add(new Command.Choice("❄️Snowball", "snowball"));
+        choices.add(new Command.Choice("🎁Present", "present"));
+        choices.add(new Command.Choice("🔔Bell", "bell"));
+        choices.add(new Command.Choice("🧦Socks", "socks"));
+        choices.add(new Command.Choice("🍪Cookie", "cookie"));
+        choices.add(new Command.Choice("🥛Milk", "milk"));
+        choices.add(new Command.Choice("🥕Carrot", "carrot"));
+        choices.add(new Command.Choice("🥧Pie", "pie"));
+        choices.add(new Command.Choice("🍗Turkey", "turkey"));
+        choices.add(new Command.Choice("🍖Meat", "meat"));
+        choices.add(new Command.Choice("🍷Wine", "wine"));
+        choices.add(new Command.Choice("🍺Beer", "beer"));
+        choices.add(new Command.Choice("🍾Champagne", "champagne"));
+        choices.add(new Command.Choice("🎄Christmas Tree", "christmas_tree"));
+        choices.add(new Command.Choice("🎅Santa", "santa"));
         Christmas.getJDA().upsertCommand("throw", "Throw a something at someone!")
                 .addOption(OptionType.USER, "user", "The user you want to throw at", true)
                 .addOptions(
@@ -43,22 +56,23 @@ public class ThrowBotCommand implements BotCommand {
             return;
         }
         if(event.getOption("item") == null || event.getOption("user") == null) {
-            event.reply("You need to specify a user and an item!").queue();
+            event.reply("You need to specify a user and an item!").setEphemeral(true).queue();
             return;
         }
-        String item = Objects.requireNonNull(event.getOption("item")).getAsString();
+        event.deferReply().queue();
+        String item = getChoice(Objects.requireNonNull(event.getOption("item")).getAsString());
         User user = Objects.requireNonNull(event.getOption("user")).getAsUser();
-        if(containsChoice(item)) return;
-        event.reply("You threw a " + item + " at " + user.getAsMention()).queue();
+        if(item == null) return;
+        event.getHook().setEphemeral(false).sendMessage("You threw a **" + item + "** at " + user.getAsMention()).queue();
         setCooldown(event.getUser(), 20*1000);
     }
 
-    public boolean containsChoice(String choice) {
+    public String getChoice(String choice) {
         for (Command.Choice choices : choices) {
-            if (choices.getName().equals(choice)) {
-                return true;
+            if (choices.getAsString().equals(choice)) {
+                return choices.getName();
             }
         }
-        return false;
+        return null;
     }
 }
