@@ -1,6 +1,6 @@
 package nl.gamehugo.christmas;
 
-import nl.gamehugo.christmas.commands.ThrowCommand;
+import nl.gamehugo.christmas.commands.ThrowBotCommand;
 import nl.gamehugo.christmas.managers.ButtonManager;
 import nl.gamehugo.christmas.managers.CommandManager;
 import nl.gamehugo.christmas.managers.ModalManager;
@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import nl.gamehugo.christmas.managers.CooldownManager;
 
 public class Christmas {
 
@@ -17,6 +18,7 @@ public class Christmas {
     private static ButtonManager buttonManager;
     private static SelectionMenuManager selectionMenuManager;
     private static ModalManager modalManager;
+    private static CooldownManager cooldownManager = new CooldownManager();
 
     public static void main(String[] args) throws InterruptedException {
         // Check if the token is provided
@@ -38,13 +40,14 @@ public class Christmas {
         // Register the event listeners
         jda.addEventListener(new EventListener());
 
-        // Initialize the command manager and the selection menu manager
+        // Initialize the Managers
+        cooldownManager = new CooldownManager();
         commandManager = new CommandManager(jda);
         buttonManager = new ButtonManager();
         selectionMenuManager = new SelectionMenuManager();
         modalManager = new ModalManager();
 
-        commandManager.register(new ThrowCommand());
+        commandManager.register(new ThrowBotCommand());
 
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
@@ -53,6 +56,9 @@ public class Christmas {
         return jda;
     }
 
+    public static CooldownManager getCooldownManager() {
+        return cooldownManager;
+    }
     public static CommandManager getCommandManager() {
         return commandManager;
     }
