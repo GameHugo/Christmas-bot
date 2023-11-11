@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import nl.gamehugo.christmas.managers.CooldownManager;
+import nl.gamehugo.christmas.utils.Database;
 
 public class Christmas {
 
@@ -52,8 +53,17 @@ public class Christmas {
         commandManager.register(new ThrowCommand());
         commandManager.register(new CountdownCommand());
 
+        Database database = new Database();
+        try {
+            database.connect("localhost", 3306, "christmas", "root", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
+
+
 
     public static JDA getJDA() {
         return jda;
