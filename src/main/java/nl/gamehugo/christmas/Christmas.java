@@ -1,5 +1,6 @@
 package nl.gamehugo.christmas;
 
+import nl.gamehugo.christmas.commands.CountdownCommand;
 import nl.gamehugo.christmas.commands.ThrowCommand;
 import nl.gamehugo.christmas.managers.ButtonManager;
 import nl.gamehugo.christmas.managers.CommandManager;
@@ -49,6 +50,7 @@ public class Christmas {
 
         // Register the commands
         commandManager.register(new ThrowCommand());
+        commandManager.register(new CountdownCommand());
 
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
