@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ButtonManager {
-    private final Map<String, Button> buttons;
+    private final Map<String, BotButton> buttons;
 
     public ButtonManager() {
         buttons = new HashMap<>();
     }
 
-    public void register(String name, Button button) {
-        buttons.put(name, button);
+    public void register(String name, BotButton botButton) {
+        buttons.put(name, botButton);
     }
 
     public boolean execute(ButtonInteractionEvent event) {

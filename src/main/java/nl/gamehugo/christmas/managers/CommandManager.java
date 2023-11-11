@@ -2,14 +2,13 @@ package nl.gamehugo.christmas.managers;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandManager {
     JDA jda;
-    private final Map<String, Command> commands;
+    private final Map<String, BotCommand> commands;
 
     public CommandManager(JDA jda) {
         this.jda = jda;
@@ -22,13 +21,13 @@ public class CommandManager {
 
     /**
      * Registers a command to the command manager. This does not register the command to Discord...
-     * @param command The command to register
+     * @param botCommand The command to register
      */
-    public void register(Command command) {
-        if(command == null) throw new IllegalArgumentException("Command cannot be null");
-        if(command.getName() == null) throw new IllegalArgumentException("Command name cannot be null");
-        if(command.getDescription() == null) throw new IllegalArgumentException("Command description cannot be null");
-        commands.put(command.getName(), command);
+    public void register(BotCommand botCommand) {
+        if(botCommand == null) throw new IllegalArgumentException("Command cannot be null");
+        if(botCommand.getName() == null) throw new IllegalArgumentException("Command name cannot be null");
+        if(botCommand.getDescription() == null) throw new IllegalArgumentException("Command description cannot be null");
+        commands.put(botCommand.getName(), botCommand);
     }
 
     /**

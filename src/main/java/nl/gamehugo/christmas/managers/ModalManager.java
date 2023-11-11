@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ModalManager {
-    private final Map<String, Modal> modals;
+    private final Map<String, BotModal> modals;
 
     public ModalManager() {
         modals = new HashMap<>();
     }
 
-    public void register(String name, Modal modal) {
-        modals.put(name, modal);
+    public void register(String name, BotModal botModal) {
+        modals.put(name, botModal);
     }
 
     public boolean execute(ModalInteractionEvent event) {
