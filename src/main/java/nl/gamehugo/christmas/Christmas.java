@@ -19,7 +19,7 @@ public class Christmas {
     private static ButtonManager buttonManager;
     private static SelectionMenuManager selectionMenuManager;
     private static ModalManager modalManager;
-    private static CooldownManager cooldownManager = new CooldownManager();
+    private static CooldownManager cooldownManager;
 
     public static void main(String[] args) throws InterruptedException {
         // Check if the token is provided
