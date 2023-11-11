@@ -10,8 +10,8 @@ public interface BotCommand {
 
     void execute(SlashCommandInteractionEvent event);
 
-    default void registerCommand(String name) {
-        Christmas.getCommandManager().register(this);
+    default void upsertCommand() {
+        Christmas.getJDA().upsertCommand(getName(), getDescription()).queue();
     }
     default void setCooldown(User user, long cooldown) {
         Christmas.getCooldownManager().setCooldown(user, getName(), cooldown);
