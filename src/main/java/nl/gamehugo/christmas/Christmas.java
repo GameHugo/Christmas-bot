@@ -2,6 +2,7 @@ package nl.gamehugo.christmas;
 
 import nl.gamehugo.christmas.commands.CountdownCommand;
 import nl.gamehugo.christmas.commands.ThrowCommand;
+import nl.gamehugo.christmas.commands.TreeCommand;
 import nl.gamehugo.christmas.managers.ButtonManager;
 import nl.gamehugo.christmas.managers.CommandManager;
 import nl.gamehugo.christmas.managers.ModalManager;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import nl.gamehugo.christmas.managers.CooldownManager;
-import nl.gamehugo.christmas.utils.Database;
+import nl.gamehugo.christmas.database.Database;
 
 public class Christmas {
 
@@ -42,6 +43,8 @@ public class Christmas {
         // Register the event listeners
         jda.addEventListener(new EventListener());
 
+        new Database();
+
         // Initialize the Managers
         cooldownManager = new CooldownManager();
         commandManager = new CommandManager(jda);
@@ -53,7 +56,10 @@ public class Christmas {
         commandManager.register(new ThrowCommand());
         commandManager.register(new CountdownCommand());
 
-        Database database = new Database();
+        TreeCommand treeCommand = new TreeCommand();
+        commandManager.register(treeCommand);
+
+        Database database = Database.getInstance();
         try {
             database.connect("localhost", 3306, "christmas", "root", "");
         } catch (Exception e) {

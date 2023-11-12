@@ -1,4 +1,4 @@
-package nl.gamehugo.christmas.utils;
+package nl.gamehugo.christmas.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +6,14 @@ import java.sql.SQLException;
 
 public class Database {
     private Connection connection;
+    private static Database instance;
+
+    private final TreeDAO treeDAO;
+
+    public Database() {
+        instance = this;
+        treeDAO = new TreeDAO();
+    }
 
     public void connect(String ip, int port, String database, String user, String password) {
         // Check if the connection is already open
@@ -46,5 +54,13 @@ public class Database {
     public Connection getConnection() {
         if (!isConnected()) throw new IllegalStateException("Could not get database connection because it is not open.");
         return connection;
+    }
+
+    public static Database getInstance() {
+        return instance;
+    }
+
+    public TreeDAO getTreeDAO() {
+        return treeDAO;
     }
 }

@@ -9,4 +9,9 @@ public interface BotButton {
     default void registerButton(String name) {
         Christmas.getButtonManager().register(name, this);
     }
+    default void registerButtons(String... names) {
+        for(String name : names) {
+            registerButton(name);
+        }
+    }
 }
