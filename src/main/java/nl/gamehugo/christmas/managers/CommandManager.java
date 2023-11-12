@@ -41,6 +41,7 @@ public class CommandManager {
             commands.get(event.getName()).execute(event);
             return true;
         } catch (Exception e) {
+            System.out.println("Error while executing command: " + e.getMessage());
             return false;
         }
     }
