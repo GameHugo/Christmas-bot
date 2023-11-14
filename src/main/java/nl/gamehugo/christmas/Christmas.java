@@ -14,6 +14,10 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import nl.gamehugo.christmas.managers.CooldownManager;
 import nl.gamehugo.christmas.database.Database;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 public class Christmas {
 
     private static JDA jda;
@@ -69,7 +73,15 @@ public class Christmas {
         jda.getPresence().setActivity(Activity.customStatus("Merry Christmas!"));
     }
 
-
+    public static File getFileFromResource(String fileName) throws URISyntaxException {
+        ClassLoader classLoader = Christmas.class.getClassLoader();
+        URL resource = classLoader.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+            return new File(resource.toURI());
+        }
+    }
 
     public static JDA getJDA() {
         return jda;
