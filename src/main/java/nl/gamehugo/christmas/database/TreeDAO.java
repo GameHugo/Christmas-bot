@@ -7,9 +7,66 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TreeDAO {
+    private static final String TABLE_NAME = "Tree";
+    private static final String COLUMN_TREE_ID = "TreeID";
+    private static final String COLUMN_GUILD_ID = "GuildID";
+    private static final String COLUMN_NAME = "Name";
+    private static final String COLUMN_SIZE = "Size";
+    private static final String COLUMN_LAST_WATERED = "LastWatered";
 
     private final Database database = Database.getInstance();
 
+    public void createTable() {
+        String sql = "CREATE TABLE IF NOT EXISTS Tree (" +
+                "TreeID INT NOT NULL, " +
+                "GuildID BIGINT NOT NULL, " +
+                "Name VARCHAR(255) NOT NULL, " +
+                "Size INT NOT NULL, " +
+                "LastWatered BIGINT NOT NULL, " +
+                "PRIMARY KEY (TreeID)" +
+                ")";
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(sql)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error while creating Tree table: " + e.getMessage());
+        }
+    }
+
+
+    private static final String INSERT_OR_UPDATE_TREE_SQL = "INSERT INTO " + TABLE_NAME + " (" +
+            COLUMN_TREE_ID + ", " + COLUMN_GUILD_ID + ", " + COLUMN_NAME + ", " + COLUMN_SIZE + ", " + COLUMN_LAST_WATERED +
+            ") VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE " +
+            COLUMN_GUILD_ID + " = VALUES(" + COLUMN_GUILD_ID + "), " +
+            COLUMN_NAME + " = VALUES(" + COLUMN_NAME + "), " +
+            COLUMN_SIZE + " = VALUES(" + COLUMN_SIZE + "), " +
+            COLUMN_LAST_WATERED + " = VALUES(" + COLUMN_LAST_WATERED + ")";
+
+    /**
+     * Insert or update a tree in the database
+     *
+     * @param tree The tree to insert or update
+     */
+    public boolean insertOrUpdateTree(Tree tree) {
+        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(INSERT_OR_UPDATE_TREE_SQL)) {
+            preparedStatement.setInt(1, tree.getTreeID());
+            preparedStatement.setLong(2, tree.getGuildID());
+            preparedStatement.setString(3, tree.getName());
+            preparedStatement.setInt(4, tree.getSize());
+            preparedStatement.setLong(5, tree.getLastWatered());
+
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error while inserting or updating tree: " + e.getMessage());
+        }
+        return false;
+    }
+
+
+    /**
+     * Get the highest treeID from the database
+     * @return The highest treeID
+     */
     public int getHighestID() {
         String sql = "SELECT MAX(TreeID) AS MaxID FROM Tree";
         try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(sql)) {
@@ -22,34 +79,6 @@ public class TreeDAO {
             System.out.println("Error while getting highest treeID: " + e.getMessage());
         }
         return 0;
-    }
-
-
-    /**
-     * Insert a tree into the database
-     *
-     * @param tree The tree to insert
-     */
-    public boolean insertTree(Tree tree) {
-        // Check if the connection is open
-        if (!database.isConnected()) {
-            throw new IllegalStateException("Cannot insert tree because database connection is not open.");
-        }
-        String sql = "INSERT INTO Tree (TreeID, GuildID, Name, Size, LastWatered) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(sql)) {
-            preparedStatement.setInt(1, tree.getTreeID());
-            preparedStatement.setLong(2, tree.getGuildID());
-            preparedStatement.setString(3, tree.getName());
-            preparedStatement.setInt(4, tree.getSize());
-            preparedStatement.setLong(5, tree.getLastWatered());
-
-            preparedStatement.executeUpdate();
-            System.out.println("Inserted tree.");
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error while inserting tree: " + e.getMessage());
-        }
-        return false;
     }
 
     /**
@@ -73,35 +102,6 @@ public class TreeDAO {
         }
         return null;
     }
-
-    /**
-     * Update a tree in the database
-     *
-     * @param tree The tree to update
-     */
-    public boolean updateTree(Tree tree) {
-        // Check if the connection is open
-        if (!database.isConnected()) {
-            throw new IllegalStateException("Cannot update tree because the database connection is not open.");
-        }
-
-        String sql = "UPDATE Tree SET GuildID = ?, Name = ?, Size = ?, LastWatered = ? WHERE TreeID = ?";
-        try (PreparedStatement preparedStatement = database.getConnection().prepareStatement(sql)) {
-            preparedStatement.setLong(1, tree.getGuildID());
-            preparedStatement.setString(2, tree.getName());
-            preparedStatement.setInt(3, tree.getSize());
-            preparedStatement.setLong(4, tree.getLastWatered());
-            preparedStatement.setInt(5, tree.getTreeID());
-
-            preparedStatement.executeUpdate();
-            System.out.println("Updated tree.");
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Error while updating tree: " + e.getMessage());
-        }
-        return false;
-    }
-
 
     /**
      * Delete a tree from the database

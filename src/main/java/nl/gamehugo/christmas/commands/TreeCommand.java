@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -16,7 +15,6 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
-import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.internal.utils.PermissionUtil;
 import nl.gamehugo.christmas.Christmas;
 import nl.gamehugo.christmas.managers.BotButton;
@@ -25,8 +23,6 @@ import nl.gamehugo.christmas.database.Database;
 import nl.gamehugo.christmas.managers.BotModal;
 import nl.gamehugo.christmas.utils.Tree;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -65,7 +61,7 @@ public class TreeCommand implements BotCommand, BotButton, BotModal {
         event.deferReply().queue();
         if(!database.getTreeDAO().treeExistsByGuild(event.getGuild().getIdLong())) {
             Tree tree = new Tree(event.getGuild().getIdLong(), "My Tree", 0, new Date().getTime());
-            if(database.getTreeDAO().insertTree(tree)) {
+            if(database.getTreeDAO().insertOrUpdateTree(tree)) {
                 event.getHook().sendMessage("You didn't have a tree yet so I created one for you!").queue();
             } else {
                 event.getHook().sendMessage("Something went wrong while creating your tree!").queue();
@@ -147,7 +143,7 @@ public class TreeCommand implements BotCommand, BotButton, BotModal {
         }
         tree.setSize(tree.getSize()+1);
         tree.setLastWatered(new Date().getTime());
-        database.getTreeDAO().updateTree(tree);
+        database.getTreeDAO().insertOrUpdateTree(tree);
         hook.sendMessage("You watered your tree!").queue();
         Guild guild = Christmas.getJDA().getGuildById(tree.getGuildID());
         if(guild == null) {
@@ -163,7 +159,7 @@ public class TreeCommand implements BotCommand, BotButton, BotModal {
 
     private void renameTree(Tree tree, InteractionHook hook, String name) {
         tree.setName(name);
-        database.getTreeDAO().updateTree(tree);
+        database.getTreeDAO().insertOrUpdateTree(tree);
         Guild guild = Christmas.getJDA().getGuildById(tree.getGuildID());
         if(guild == null) {
             hook.sendMessage("Something went wrong while getting your guild!").queue();
@@ -173,22 +169,12 @@ public class TreeCommand implements BotCommand, BotButton, BotModal {
     }
 
     private void sendTree(Tree tree, InteractionHook hook) {
-        File file;
-        try {
-            if(tree.getSize() > 10) {
-                file = Christmas.getFileFromResource("trees/tree-100.png");
-            } else {
-                file = Christmas.getFileFromResource("trees/tree-1.png");
-            }
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
         Guild guild = Christmas.getJDA().getGuildById(tree.getGuildID());
         if(guild == null) {
             hook.sendMessage("Something went wrong while getting your guild!").queue();
             return;
         }
-        hook.sendFiles(FileUpload.fromData(file, "tree.png")).setEmbeds(getEmbed(guild, tree)).addActionRow(
+        hook.sendMessageEmbeds(getEmbed(guild, tree)).addActionRow(
                 Button.primary("water", "💧Water Tree"),
                 Button.primary("rename", "✏️Rename Tree")
         ).queue();
